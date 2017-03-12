@@ -1,0 +1,45 @@
+{
+    "version": 1488647842356,
+    "siguiente": {
+        "torneo": "Torneo Águila 2017-I",
+        "jornada": 5,
+        "fecha": "Sun Mar 12 2017 15:15:00 GMT-0500 (Eastern Standard Time)",
+        "visitante": 33,
+        "estadio": 12,
+        "local": 15,
+        "marcador": null
+    },
+    "ultimo": {
+        "torneo": "Copa Águila 2017",
+        "jornada": 1,
+        "fecha": "Thu Mar 09 2017 15:00:00 GMT-0500 (Eastern Standard Time)",
+        "visitante": 33,
+        "estadio": 33,
+        "local": 30,
+        "marcador": [0,1]
+    },
+    "forma": [
+        {
+            "resultado": 1,
+            "equipoId": 27,
+            "local": false,
+            "fecha": "Wed Mar 11 2017 15:30:00 GMT-0500 (Eastern Standard Time)"
+        }, {
+            "resultado": 1,
+            "equipoId": 28,
+            "local": false,
+            "fecha": "Wed Mar 11 2017 15:30:00 GMT-0500 (Eastern Standard Time)"
+        }, {
+            "resultado": 2,
+            "equipoId": 29,
+            "local": false,
+            "fecha": "Wed Mar 11 2017 15:30:00 GMT-0500 (Eastern Standard Time)"
+        }, {
+            "resultado": 3,
+            "equipoId": 30,
+            "local": false,
+            "fecha": "Wed Mar 11 2017 15:30:00 GMT-0500 (Eastern Standard Time)"
+        }
+    ],
+    "posiciones": []
+}
