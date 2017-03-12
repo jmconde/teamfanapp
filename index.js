@@ -10,6 +10,6 @@ var server = restify.createServer();
 
 router(server);
 
-server.listen(5051, function() {
+server.listen(5501, function() {
   console.log('%s listening at %s', server.name, server.url);
 });
