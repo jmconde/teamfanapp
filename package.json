@@ -12,6 +12,7 @@
     "@types/node": "^7.0.8",
     "mysql": "^2.13.0",
     "node-mariadb": "^0.1.1",
+    "q": "^1.4.1",
     "reflect-metadata": "^0.1.10",
     "restify": "^4.3.0",
     "typeorm": "0.0.9"
