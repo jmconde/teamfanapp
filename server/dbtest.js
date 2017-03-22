@@ -1,4 +1,13 @@
-var path = require("path");
+var connFactory = require("./db/connectionFactory.js");
+
+connFactory(function (err, conn) {
+  console.log("Connected!!", conn);
+  conn.close();
+});
+
+
+
+/*var path = require("path");
 var Q = require("q");
 
 var connFactory = require("./db/connectionFactory.js");
@@ -13,13 +22,13 @@ function createCiudades(conn) {
   var promises = [];
    var repoCiudad = conn.getRepository("Ciudad");
 
-   return repoCiudad.query("delete from ciudad;")
+   return repoCiudad.query("select 1 from ciudad;") //repoCiudad.query("delete from ciudad;")
     .then(function () {
       dataCiudades.data.forEach(function(cData) {
         var ciudad = new Ciudad(cData.cod, cData.nombre);
         promises.push(repoCiudad.persist(ciudad)
           .then(function (d) {
-            //console.log("Inserted: ", d);
+            console.log("Inserted: ", d);
           })); 
       });
 
@@ -50,13 +59,11 @@ function createEstadios(conn) {
 
 connFactory().then(conn => {
   console.log("Connected");
-  Q.all([
-    // createCiudades(conn),
-    createEstadios(conn)
-  ]) 
-  .then(function () {
-      conn.close();
-  });
+  createCiudades(conn)
+    .then(createEstadios(conn))
+    // .then(function () {
+    //     conn.close();
+    // });
 
   // pais.find().then(res => {
   //   console.log("=>", res);
@@ -72,3 +79,4 @@ connFactory().then(conn => {
 // CREATE USER 'union'@'%' IDENTIFIED BY 'Maw274IGNPZjYcMM';
 // GRANT ALL PRIVILEGES ON *.* TO 'union'@'%';
 
+*/

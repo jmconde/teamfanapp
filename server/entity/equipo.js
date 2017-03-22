@@ -20,7 +20,7 @@ const EquipoSchema = {
     },
     relations: {
         estadio: {
-            target: Estadio,
+            target: "Estadio",
             type: "many-to-one",
             joinTable: true,
             // cascadeInsert: true

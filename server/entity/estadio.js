@@ -18,8 +18,8 @@ const EstadioSchema = {
     relations: {
         ciudad: {
             target: "Ciudad",
-            type: "many-to-one",
-            // joinColumn: "codigo_dane",
+            type: "one-to-many",
+            joinColumn: "codigo_dane",
             joinTable: false
         }
     }
