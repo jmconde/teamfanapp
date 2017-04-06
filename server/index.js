@@ -1,17 +1,23 @@
-var express = require('express');
+const PORT = 5051;
+const express = require("express");
+const path = require("path");
+const j = path.join;
 
-var apiRouter = require("./api-router.js");
+const apiRouter = require("./api-router.js");
+const appRouter = require("./app-router.js");
 
-var app = express();
+const app = express();
 
+console.log(__dirname);
+console.log(j(__dirname, '../build'));
 
-// app.set('views', './server/templates');
-// app.use("/assets", express.static("./build"));
-// app.set('view engine', 'handlebars');
+app.set('views', j(__dirname, 'templates'));
+app.use("/assets", express.static(j(__dirname, '../build')));
+app.set('view engine', 'handlebars');
 
-// app.use("/", appRouter);
+app.use("/", appRouter);
 app.use("/api", apiRouter);
 
-app.listen(5501, function() {
-  console.log('%s listening at %s', app.name, 5501);
+app.listen(PORT, function() {
+  console.log('%s listening at %s', app.name, PORT);
 });

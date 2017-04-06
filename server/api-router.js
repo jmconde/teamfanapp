@@ -1,6 +1,6 @@
 "use strict";
-var express = require("express");
-var router = express.Router();
+
+var router = require("express").Router();
 
 var connFactory = require("./db/connectionFactory.js");
 var data = require("./data.json");
