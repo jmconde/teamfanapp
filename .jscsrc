@@ -1,0 +1,8 @@
+{
+   "preset": "airbnb",
+   "validateIndentation": 4,
+   "requireTrailingComma": false,
+   "validateQuoteMarks": { "mark": "\"", "escape": true, "ignoreJSX": true },
+   "disallowMultipleVarDecl": { "allExcept": ["undefined"] },
+   "maximumLineLength": false
+}

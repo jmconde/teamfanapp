@@ -1,3 +1,5 @@
+"use strict";
+
 const PORT = 5051;
 const express = require("express");
 const path = require("path");
@@ -9,15 +11,15 @@ const appRouter = require("./app-router.js");
 const app = express();
 
 console.log(__dirname);
-console.log(j(__dirname, '../build'));
+console.log(j(__dirname, "../build"));
 
-app.set('views', j(__dirname, 'templates'));
-app.use("/assets", express.static(j(__dirname, '../build')));
-app.set('view engine', 'handlebars');
+app.set("views", j(__dirname, "templates"));
+app.use("/assets", express.static(j(__dirname, "../build")));
+app.set("view engine", "handlebars");
 
 app.use("/", appRouter);
 app.use("/api", apiRouter);
 
-app.listen(PORT, function() {
-  console.log('%s listening at %s', app.name, PORT);
+app.listen(PORT, function () {
+    console.log("%s listening at %s", app.name, PORT);
 });

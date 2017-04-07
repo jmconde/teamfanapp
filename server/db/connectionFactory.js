@@ -1,15 +1,34 @@
 "use strict";
-var orm = require("orm");
+// var orm = require("orm");
+var Sequelize = require("sequelize");
 
-var pais = require("../model/pais.js");
-// var PaisEntity = require("../entity/pais.js");
-// var CiudadEntity = require("../entity/ciudad.js");
-// var EquipoEntity = require("../entity/equipo.js");
-// var EstadioEntity = require("../entity/estadio.js");
+var models = require("./models");
+var pais = models.pais;
+var ciudad = models.ciudad;
 
-var connection;
+module.exports = function (sync, forceSync) {
 
-module.exports = function (callback) {
+
+    var db = new Sequelize("unionapp", "unionapp_user", "Maw274IGNPZjYcMM", {
+        host: "xintana.co",
+        dialect: "mariadb",
+
+        pool: {
+            max: 5,
+            min: 0,
+            idle: 10000
+        }
+    });
+
+    if (sync) db.sync({ force: forceSync });
+
+    pais(db);
+    ciudad(db);
+
+    return db;
+};
+
+/*module.exports = function (callback) {
     if (connection) return callback(null, connection);
 
         orm.connect({
@@ -21,7 +40,7 @@ module.exports = function (callback) {
             user     : "unionapp_user",
             password : "Maw274IGNPZjYcMM"
         }, function(err, db) {
-        
+
         if (err) return console.error('Connection error: ' + err);
 
         connection = db;
@@ -30,8 +49,9 @@ module.exports = function (callback) {
         pais(db);
 
         callback(null, connection);
-        
-    });
+
+    });*/
+
 //    return  typeorm.createConnection({
 //         driver: {
 //             type: "mysql",
@@ -49,4 +69,4 @@ module.exports = function (callback) {
 //         ],
 //         autoSchemaSync: true
 //     })
-};
+// };
