@@ -8,7 +8,7 @@ export default class Header extends React.Component {
         return (
 
                 <div style={{ textAlign: "center" }}>
-                    <h1>Hello World!</h1>
+                    <h1>Union Magdanela App - Admistrador!</h1>
                 </div>
         );
     }

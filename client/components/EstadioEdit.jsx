@@ -5,11 +5,9 @@ export default class PaisForm extends React.Component {
         super(props);
         let update = this.props.update || !!this.props.location.search;
         this.state = {
-            id: "",
-            nombre: "",
+            id: this.props.location.search.substring(1) || "",
             disabled: true,
             update: update,
-            pais: this.props.pais || this.props.location.search.substring(1)
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.submitForm = this.submitForm.bind(this);
@@ -18,14 +16,33 @@ export default class PaisForm extends React.Component {
     componentDidMount() {
         console.log(this.state);
         if (this.state.update) {
-            $.getJSON(`http://localhost:5051/api/paises/${this.state.pais}`, pais => {
-                console.log("pais", pais);
-                this.setState({
-                    id: pais.id,
-                    nombre: pais.nombre,
-                    disabled: false
+
+            $.getJSON(`http://localhost:5051/api/estadio/${this.state.id}`)
+
+            $.getJSON(`http://localhost:5051/api/estadio/${this.state.id}`)
+                .then(estadio => {
+                    this.setState({
+                        estadio: estadio
+                    });
+                    return $.getJSON(`http://localhost:5051/api/paises`);
+                })
+                .then(paises => {
+                    console.log(paises);
+                    this.setState({
+                        paises
+                    });
+                     return $.getJSON(`http://localhost:5051/api/paises/${this.state.estadio.ciudad.pais.id}/ciudades`);
+                })
+                
+                .then(ciudades => {
+                    console.log(ciudades);
+                    this.setState({
+                        ciudades
+                    });
+                })
+                .then(()=>{
+                    console.log(this.state);
                 });
-            });
         }
     }
 

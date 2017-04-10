@@ -1,13 +1,16 @@
 "use strict";
 
+var Ciudad = require("../db/models").ciudad;
 var Pais = require("../db/models").pais;
 var logger = require("winston");
 
 module.exports = {
-    create(req, res) {
-        return Pais.create({
+    /*create(req, res) {
+        var paisId = req.params.paisId;
+        return Ciudad.create({
             id: req.body.id,
-            nombre: req.body.nombre
+            nombre: req.body.nombre,
+            pais
         })
         .then(pais => res.status(201).send(pais))
         .catch(err => res.status(400).send(err));
@@ -50,6 +53,17 @@ module.exports = {
             }
         })
         .then(count => res.status(201).send({ count }))
+        .catch(err => res.status(400).send(err));
+    }*/
+    allByPais(req, res) {
+        logger.log("allByPais", req.params.paisId)
+        return Ciudad.findAll({
+            include: [Pais],
+            where: {
+                paisId:  req.params.paisId
+            }
+        })
+        .then(ciudades => res.status(201).send(ciudades))
         .catch(err => res.status(400).send(err));
     }
 };
