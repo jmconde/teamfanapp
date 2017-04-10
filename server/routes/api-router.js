@@ -22,5 +22,6 @@ router.get("/paises/:paisId/ciudades", ciudadController.allByPais);
 router.get("/paises/:paisId/ciudades/:ciudadId/estadios", estadioController.allByCiudad);
 router.get("/paises/:paisId/estadios", estadioController.allByPais);
 router.get("/estadio/:estadioId", estadioController.byId);
+router.get("/ciudades/estadio", estadioController.ciudades);
 
 module.exports = router;

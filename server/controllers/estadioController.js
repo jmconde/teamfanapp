@@ -1,5 +1,6 @@
 "use strict";
 
+var sequelize = require("sequelize");
 var Pais = require("../db/models").pais;
 var Ciudad = require("../db/models").ciudad;
 var Estadio = require("../db/models").estadio;
@@ -33,13 +34,23 @@ module.exports = {
         logger.log("allByPais", req.params.paisId)
         return Estadio.findAll({
             order: "nombre ASC",
-            include: [{ 
-                model: Ciudad, 
+            include: [{
+                model: Ciudad,
                 where: { paisId: req.params.paisId },
-                include: [Pais] 
+                include: [Pais]
             }]
         })
         .then(estadios => res.status(201).send(estadios))
         .catch(err => res.status(400).send(err));
+    },
+
+    ciudades(req, res) {
+        return Estadio.findAll({
+            distinct: true,
+            attributes: [sequelize.literal("DISTINCT `ciudadId`"), "ciudadId"]
+        })
+        .then(estadios => res.status(201).send(estadios.map(ciudad => ciudad.ciudadId)))
+        .catch(err => res.status(400).send(err));
     }
+
 };

@@ -21,21 +21,24 @@ export default class PaisForm extends React.Component {
 
             $.getJSON(`http://localhost:5051/api/estadio/${this.state.id}`)
                 .then(estadio => {
+                    console.log(estadio);
                     this.setState({
-                        estadio: estadio
+                        source: estadio,
+                        nombre: estadio.nombre,
+                        id: estadio.id,
+                        ciudad: estadio.ciudad.id,
+                        pais: estadio.ciudad.pais.id
                     });
                     return $.getJSON(`http://localhost:5051/api/paises`);
                 })
                 .then(paises => {
-                    console.log(paises);
                     this.setState({
                         paises
                     });
                      return $.getJSON(`http://localhost:5051/api/paises/${this.state.estadio.ciudad.pais.id}/ciudades`);
                 })
-                
+
                 .then(ciudades => {
-                    console.log(ciudades);
                     this.setState({
                         ciudades
                     });
@@ -50,7 +53,6 @@ export default class PaisForm extends React.Component {
         const target = event.target;
         const value = target.type === "checkbox" ? target.checked : target.value;
         const name = target.name;
-        console.log(this);
         this.setState({
             [name]: value
         });
@@ -73,7 +75,7 @@ export default class PaisForm extends React.Component {
         $.ajax(url, {
             data: JSON.stringify(data),
             method: method,
-            contentType : "application/json",
+            contentType: "application/json",
             success: response => {
                 console.log(response);
             }
@@ -82,13 +84,30 @@ export default class PaisForm extends React.Component {
     }
 
     render() {
+        var paises;
+        if (this.state.paises)
+            paises = (<select className="form-control">
+                { this.state.paises.map(pais => {
+                    return <option value={pais.id} selected={pais.id === this.state.pais}>{pais.nombre}</option>;
+                })}
+            </select>);
+
+        /*
+        <select class="form-control">
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+        </select>
+        */
         return (
             <div className="row">
                 <div className="col-md-6 col-md-offset-3">
-                    <h2> Pa&iacute;s </h2>
+                    <h2> Estadio </h2>
                     <form className="horizontal-form" onSubmit={this.submitForm}>
                         <div className="form-group">
-                            <label htmlFor="in-id" className="col-sm-2 control-label">Id:</label>
+                            <label htmlFor="id" className="col-sm-2 control-label">Id:</label>
                             <div className="col-sm-10">
                                 <input type="text" className="form-control" id="id" name="id"
                                     placeholder="ID" maxLength="2" value={this.state.id}
@@ -96,11 +115,17 @@ export default class PaisForm extends React.Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="in-nombre" className="col-sm-2 control-label">Nombre:</label>
+                            <label htmlFor="nombre" className="col-sm-2 control-label">Nombre:</label>
                             <div className="col-sm-10">
                                 <input type="text" className="form-control" id="nombre" name="nombre"
-                                    placeholder="Nombre del Pa&iacute;s" value={this.state.nombre}
+                                    placeholder="Nombre del Estadio" value={this.state.nombre}
                                     onChange={this.handleInputChange} disabled={this.state.disabled} />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="ciudad" className="col-sm-2 control-label">Ciudad:</label>
+                            <div className="col-sm-10">
+                               { paises }
                             </div>
                         </div>
                         <div className="form-group">
