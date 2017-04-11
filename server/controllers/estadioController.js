@@ -9,6 +9,30 @@ var logger = require("winston");
 const includeCiudadPais = [{ model: Ciudad, include: [Pais] }];
 
 module.exports = {
+    create(req, res) {
+        return Estadio.create({
+            id: req.body.id,
+            nombre: req.body.nombre,
+            ciudadId: req.body.ciudadId
+        })
+        .then(estadio => res.status(201).send(estadio))
+        .catch(err => res.status(400).send(err));
+    },
+
+    update(req, res) {
+        console.log(req.body.nombre);
+        return Estadio.update({
+            nombre: req.body.nombre,
+            ciudadId: req.body.ciudadId
+        }, {
+            where: {
+                id: req.params.estadioId
+            }
+        })
+        .then(updated => res.status(201).send(updated))
+        .catch(err => res.status(400).send(err));
+    },
+
     byId(req, res) {
         logger.log("info", "byId: " + req.params.estadioId);
         return Estadio.findById(req.params.estadioId, {

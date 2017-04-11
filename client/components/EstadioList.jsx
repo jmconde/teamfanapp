@@ -2,7 +2,7 @@
 
 import React from "react";
 import { HashRouter, Link } from "react-router-dom";
-import config from '../../common/config.js';
+import config from "../../common/config.js";
 import Filter from "./Filter.jsx";
 
 export default class EstadioList extends React.Component {
@@ -29,7 +29,7 @@ export default class EstadioList extends React.Component {
     }
 
     filterHandler(estadios) {
-         this.setState({ estadiosToShow: estadios });
+        this.setState({ estadiosToShow: estadios });
     }
 
     componentDidMount() {
@@ -50,15 +50,15 @@ export default class EstadioList extends React.Component {
                     <td>{estadio.ciudad.pais.nombre}</td>
                     <td>
                         <Link to={{
-                            pathname: "/estadioes/edit",
+                            pathname: "/estadios/edit",
                             search: `?${estadio.id}`
                         }}>Edit</Link>
                     </td>
                 </tr>
-            )
+            );
         });
 
-        return(
+        return (
             <div className="row">
                 <div className="col-md-8 col-md-offset-2">
                     <h3>Lista de Estadios</h3>

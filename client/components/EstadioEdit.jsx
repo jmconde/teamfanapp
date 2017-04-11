@@ -10,6 +10,7 @@ export default class PaisForm extends React.Component {
             update: update,
         };
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSelectChange = this.handleSelectChange.bind(this);
         this.submitForm = this.submitForm.bind(this);
     }
 
@@ -21,7 +22,6 @@ export default class PaisForm extends React.Component {
 
             $.getJSON(`http://localhost:5051/api/estadio/${this.state.id}`)
                 .then(estadio => {
-                    console.log(estadio);
                     this.setState({
                         source: estadio,
                         nombre: estadio.nombre,
@@ -35,17 +35,28 @@ export default class PaisForm extends React.Component {
                     this.setState({
                         paises
                     });
-                     return $.getJSON(`http://localhost:5051/api/paises/${this.state.estadio.ciudad.pais.id}/ciudades`);
+                     return $.getJSON(`http://localhost:5051/api/paises/${this.state.pais}/ciudades`);
                 })
 
                 .then(ciudades => {
                     this.setState({
-                        ciudades
+                        ciudades,
+                        disabled: false
                     });
-                })
-                .then(()=>{
-                    console.log(this.state);
                 });
+        }
+    }
+
+    handleSelectChange(event){
+        const target = event.target;
+        const name = target.name;
+        const value = target.value;
+
+        if (name === "pais") {
+            // TODO:
+            console.log("Buscar ciudades pais");
+        } else if (name === "ciudad") {
+            this.setState({ ciudad: value });
         }
     }
 
@@ -62,10 +73,13 @@ export default class PaisForm extends React.Component {
         event.preventDefault();
         let data = {
             id: this.state.id,
-            nombre: this.state.nombre
+            nombre: this.state.nombre,
+            ciudadId: this.state.ciudad
         };
+        console.log(data);
+
         let method = "POST";
-        let url = "http://localhost:5051/api/paises";
+        let url = "http://localhost:5051/api/estadios";
 
         if (this.state.update) {
             method = "PUT";
@@ -84,23 +98,21 @@ export default class PaisForm extends React.Component {
     }
 
     render() {
-        var paises;
+        var paises, ciudades;
         if (this.state.paises)
-            paises = (<select className="form-control">
-                { this.state.paises.map(pais => {
-                    return <option value={pais.id} selected={pais.id === this.state.pais}>{pais.nombre}</option>;
+            paises = (<select classID="pais" name="pais" className="form-control" disabled={this.state.disabled} value={this.state.pais} onChange={this.handleSelectChange}>
+                { this.state.paises.map((pais, i) => {
+                    return <option key={i} value={pais.id}>{pais.nombre}</option>;
                 })}
             </select>);
 
-        /*
-        <select class="form-control">
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-        </select>
-        */
+        if (this.state.ciudades)
+            ciudades = (<select classID="ciudad" name="ciudad" className="form-control" disabled={this.state.disabled} value={this.state.ciudad} onChange={this.handleSelectChange}>
+                { this.state.ciudades.map((ciudad, i) => {
+                    return <option key={i} value={ciudad.id} >{ciudad.nombre}</option>;
+                })}
+            </select>);
+
         return (
             <div className="row">
                 <div className="col-md-6 col-md-offset-3">
@@ -123,9 +135,15 @@ export default class PaisForm extends React.Component {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label htmlFor="ciudad" className="col-sm-2 control-label">Ciudad:</label>
+                            <label htmlFor="pais" className="col-sm-2 control-label">Pais:</label>
                             <div className="col-sm-10">
                                { paises }
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="ciudad" className="col-sm-2 control-label">Ciudad:</label>
+                            <div className="col-sm-10">
+                               { ciudades }
                             </div>
                         </div>
                         <div className="form-group">

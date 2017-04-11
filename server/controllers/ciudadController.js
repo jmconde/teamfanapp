@@ -59,6 +59,7 @@ module.exports = {
         logger.log("allByPais", req.params.paisId)
         return Ciudad.findAll({
             include: [Pais],
+            order: "nombre ASC",
             where: {
                 paisId:  req.params.paisId
             }

@@ -27,7 +27,9 @@ module.exports = {
     },
 
     all(req, res) {
-        return Pais.all()
+        return Pais.all({
+            order: "nombre ASC"
+        })
         .then(paises => res.status(201).send(paises))
         .catch(err => res.status(400).send(err));
     },
