@@ -20,6 +20,10 @@ module.exports = function (sequelize, DataTypes) {
                     pais.hasMany(models.ciudad, {
                         foreignKey: "paisId"
                     });
+
+                    pais.hasMany(models.torneo, {
+                        foreignKey: "paisId"
+                    });
                 }
             }
         });
