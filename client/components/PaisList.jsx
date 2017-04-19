@@ -15,7 +15,7 @@ export default class PaisList extends React.Component {
 
     componentDidMount() {
         $.getJSON("http://localhost:5051/api/paises", paises => {
-            this.setState({ 
+            this.setState({
                 paises,
                 paisesToShow: paises
              });
@@ -23,7 +23,7 @@ export default class PaisList extends React.Component {
     }
 
     filterHandler(paises) {
-        this.setState({ 
+        this.setState({
             paisesToShow: paises
         });
     }
@@ -49,6 +49,11 @@ export default class PaisList extends React.Component {
                             pathname: "/estadios",
                             search: `?${pais.id}`
                         }}>Estadios</Link>
+                        &nbsp;
+                         <Link to={{
+                            pathname: "/equipos",
+                            search: `?${pais.id}`
+                        }}>Equipos</Link>
                     </td>
                 </tr>
             )
