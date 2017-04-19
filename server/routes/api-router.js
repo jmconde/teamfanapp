@@ -6,6 +6,7 @@ const paisController = controllers.pais;
 const ciudadController = controllers.ciudad;
 const estadioController = controllers.estadio;
 const equipoController = controllers.equipo;
+const torneoController = controllers.torneo;
 
 router.get("/", (req, res) => res.status(200).send({
     message: "Welcome to the API!"
@@ -26,6 +27,10 @@ router.get("/ciudades/estadio", estadioController.ciudades);
 router.post("/estadios", estadioController.create);
 router.put("/estadios/:estadioId", estadioController.update);
 
+
 router.get("/paises/:paisId/equipos", equipoController.allByPais);
+
+router.get("/torneos", torneoController.all);
+router.post("/torneos", torneoController.create);
 
 module.exports = router;
