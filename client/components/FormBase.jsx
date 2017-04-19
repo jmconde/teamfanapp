@@ -32,6 +32,6 @@ export default class FormBase extends React.Component {
     }
 
     submitForm(event) {
-        if (this.onSubmit) this.onsubmit(event);
+        if (this.onSubmit) this.onSubmit(event);
     }
 }

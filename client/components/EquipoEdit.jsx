@@ -1,24 +1,29 @@
-import FormBase from "./FormBasejsx";
+import React from "react";
+import FormBase from "./FormBase.jsx";
+import Q from "q";
 
 export default class PaisForm extends FormBase {
     constructor(props) {
         super(props);
+        console.log(this.state.id)
+        this.state.paises = [];
+        this.state.ciudades = [];
+        this.state.estadios = [];
     }
 
     componentDidMount() {
-        console.log(this.state);
         if (this.state.update) {
-
-            $.getJSON(`http://localhost:5051/api/estadio/${this.state.id}`)
-
-            $.getJSON(`http://localhost:5051/api/estadio/${this.state.id}`)
-                .then(estadio => {
+            $.getJSON(`http://localhost:5051/api/equipos/${this.state.id}`)
+                .then(equipo => {
                     this.setState({
-                        source: estadio,
-                        nombre: estadio.nombre,
-                        id: estadio.id,
-                        ciudad: estadio.ciudad.id,
-                        pais: estadio.ciudad.pais.id
+                        source: Object.assign({}, equipo),
+                        nombre: equipo.nombre,
+                        id: equipo.id,
+                        ciudad: equipo.ciudad.id,
+                        pais: equipo.ciudad.pais.id,
+                        estadio: equipo.estadio.id,
+                        imagen: equipo.imagen,
+                        nombre_corto: equipo.nombre_corto
                     });
                     return $.getJSON(`http://localhost:5051/api/paises`);
                 })
@@ -26,42 +31,66 @@ export default class PaisForm extends FormBase {
                     this.setState({
                         paises
                     });
-                     return $.getJSON(`http://localhost:5051/api/paises/${this.state.pais}/ciudades`);
+                    return $.getJSON(`http://localhost:5051/api/paises/${this.state.pais}/ciudades`);
                 })
 
                 .then(ciudades => {
                     this.setState({
-                        ciudades,
+                        ciudades
+                    });
+                    return $.getJSON(`http://localhost:5051/api/paises/${this.state.pais}/estadios`);
+                })
+
+                .then(estadios => {
+                    this.setState({
+                        estadios,
                         disabled: false
                     });
                 });
         }
     }
 
-    handleSelectChange(event){
+    onSelectChange(event){
         const target = event.target;
         const name = target.name;
         const value = target.value;
+        const state = this.state[name];
+
+        if (value === state) return;
 
         if (name === "pais") {
-            // TODO:
-            console.log("Buscar ciudades pais");
+            this.setState({
+                disabled: true
+            });
+
+            $.getJSON(`http://localhost:5051/api/paises/${value}/ciudades`)
+                .then(ciudades => {
+                    this.setState({
+                        ciudades,
+                        ciudad: "",
+                        pais: value,
+                        disabled: false
+                    });
+                });
         } else if (name === "ciudad") {
             this.setState({ ciudad: value });
+        } else if (name === "estadio") {
+            this.setState({ estadio: value });
         }
     }
 
-    submitForm(event) {
+    onSubmit(event) {
         event.preventDefault();
         let data = {
             id: this.state.id,
             nombre: this.state.nombre,
-            ciudadId: this.state.ciudad
+            ciudadId: this.state.ciudad,
+            estadioId: this.state.estadio,
+            imagen: this.state.imagen,
+            nombre_corto: this.state.nombre_corto
         };
-        console.log(data);
-
         let method = "POST";
-        let url = "http://localhost:5051/api/estadios";
+        let url = "http://localhost:5051/api/equipos";
 
         if (this.state.update) {
             method = "PUT";
@@ -80,25 +109,28 @@ export default class PaisForm extends FormBase {
     }
 
     render() {
-        var paises, ciudades;
-        if (this.state.paises)
-            paises = (<select classID="pais" name="pais" className="form-control" disabled={this.state.disabled} value={this.state.pais} onChange={this.handleSelectChange}>
-                { this.state.paises.map((pais, i) => {
-                    return <option key={i} value={pais.id}>{pais.nombre}</option>;
-                })}
-            </select>);
+        var paises = (<select classID="pais" name="pais" className="form-control" disabled={this.state.disabled} value={this.state.pais} onChange={this.handleSelectChange}>
+            { this.state.paises.map((pais, i) => {
+                return <option key={i} value={pais.id}>{pais.nombre}</option>;
+            })}
+        </select>);
 
-        if (this.state.ciudades)
-            ciudades = (<select classID="ciudad" name="ciudad" className="form-control" disabled={this.state.disabled} value={this.state.ciudad} onChange={this.handleSelectChange}>
-                { this.state.ciudades.map((ciudad, i) => {
-                    return <option key={i} value={ciudad.id} >{ciudad.nombre}</option>;
-                })}
-            </select>);
+        var ciudades = (<select classID="ciudad" name="ciudad" className="form-control" disabled={this.state.disabled} value={this.state.ciudad} onChange={this.handleSelectChange}>
+            { this.state.ciudades.map((ciudad, i) => {
+                return <option key={i} value={ciudad.id} >{ciudad.nombre}</option>;
+            })}
+        </select>);
+
+        var estadios = (<select classID="estadio" name="estadio" className="form-control" disabled={this.state.disabled} value={this.state.estadio} onChange={this.handleSelectChange}>
+            { this.state.estadios.map((estadio, i) => {
+                return <option key={i} value={estadio.id} >{estadio.nombre} ({estadio.ciudad.nombre})</option>;
+            })}
+        </select>);
 
         return (
             <div className="row">
                 <div className="col-md-6 col-md-offset-3">
-                    <h2> Estadio </h2>
+                    <h2> Equipo </h2>
                     <form className="horizontal-form" onSubmit={this.submitForm}>
                         <div className="form-group">
                             <label htmlFor="id" className="col-sm-2 control-label">Id:</label>
@@ -126,6 +158,28 @@ export default class PaisForm extends FormBase {
                             <label htmlFor="ciudad" className="col-sm-2 control-label">Ciudad:</label>
                             <div className="col-sm-10">
                                { ciudades }
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="imagen" className="col-sm-2 control-label">Imagen:</label>
+                            <div className="col-sm-10">
+                                <input type="text" className="form-control" id="imagen" name="imagen"
+                                    placeholder="Nombre del Archivo" value={this.state.imagen}
+                                    onChange={this.handleInputChange} disabled={this.state.disabled} />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="nombre_corto" className="col-sm-2 control-label">Nombre:</label>
+                            <div className="col-sm-10">
+                                <input type="text" className="form-control" id="nombre_corto" name="nombre_corto"
+                                    placeholder="Nombre corto" value={this.state.nombre_corto}
+                                    onChange={this.handleInputChange} disabled={this.state.disabled} />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="estadio" className="col-sm-2 control-label">Estadio por defecto:</label>
+                            <div className="col-sm-10">
+                                { estadios }
                             </div>
                         </div>
                         <div className="form-group">

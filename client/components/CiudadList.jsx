@@ -8,7 +8,7 @@ export default class CiudadList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            pais: this.props.location.search.substring(1) || "CO",
+            queryPais: this.props.location.search.substring(1),
             ciudades: [],
             ciudadesToShow: []
         };
@@ -23,19 +23,33 @@ export default class CiudadList extends React.Component {
     }
 
     componentDidMount() {
-        var paisId = this.state.pais;
-        $.getJSON(`http://localhost:5051/api/paises/${paisId}`, pais => {
-            this.setState({ paisNombre: pais.nombre });
-        });
-         $.getJSON(`http://localhost:5051/api/paises/${paisId}/ciudades`, ciudades => {
-            this.setState({ 
-                ciudades,
-                ciudadesToShow: ciudades 
+        if (this.state.queryPais) {
+            $.getJSON(`http://localhost:5051/api/paises/${this.state.queryPais}`, pais => {
+                this.setState({ paisNombre: pais.nombre });
             });
-        });
+            $.getJSON(`http://localhost:5051/api/paises/${this.state.queryPais}/ciudades`, ciudades => {
+                this.setState({
+                    ciudades,
+                    ciudadesToShow: ciudades
+                });
+            });
+        } else {
+            $.getJSON(`http://localhost:5051/api/ciudades`, ciudades => {
+                this.setState({
+                    ciudades,
+                    ciudadesToShow: ciudades
+                });
+            });
+        }
     }
 
     render() {
+        var title = <h3>Lista de Ciudades</h3>;
+
+        if (this.state.paisNombre) {
+            title = <h3>Lista de Ciudades de {this.state.paisNombre}</h3>;
+        }
+
         var ciudades = this.state.ciudadesToShow.map(ciudad => {
             return (
                 <tr key={ciudad.id}>
@@ -60,7 +74,7 @@ export default class CiudadList extends React.Component {
         return(
             <div className="row">
                 <div className="col-md-8 col-md-offset-2">
-                    <h3>Lista de Ciudades de {this.state.paisNombre}</h3>
+                    { title }
                     <Filter source = {this.state.ciudades} min="0" field="nombre" handler = { this.filterHandler } />
                     <HashRouter>
                         <table className="table">

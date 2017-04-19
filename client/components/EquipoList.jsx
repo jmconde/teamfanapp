@@ -31,12 +31,16 @@ export default class EstadioList extends React.Component {
     componentDidMount() {
         if (this.state.queryCiudad) {
             $.getJSON(`${config.api}/paises/${this.state.queryPais}/ciudades/${this.state.queryCiudad}/equipos`, this.setEquipos);
-        } else {
+        } else if (this.state.queryPais !== "") {
             $.getJSON(`${config.api}/paises/${this.state.queryPais}/equipos`, this.setEquipos);
+        } else {
+            console.log("por aqui!");
+            $.getJSON(`${config.api}/equipos/`, this.setEquipos);
         }
     }
 
     render() {
+        console.log(this.state.equiposToShow);
         var equipos = this.state.equiposToShow.map((equipo, i) => {
             return (
                 <tr key={i}>

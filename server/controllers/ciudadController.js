@@ -29,12 +29,6 @@ module.exports = {
         .catch(err => res.status(400).send(err));
     },
 
-    all(req, res) {
-        return Pais.all()
-        .then(paises => res.status(201).send(paises))
-        .catch(err => res.status(400).send(err));
-    },
-
     find(req, res) {
         return Pais.find({
             where: {
@@ -55,6 +49,16 @@ module.exports = {
         .then(count => res.status(201).send({ count }))
         .catch(err => res.status(400).send(err));
     }*/
+
+    all(req, res) {
+        return Ciudad.findAll({
+            include: [Pais],
+            order: "nombre ASC"
+        })
+        .then(ciudades => res.status(201).send(ciudades))
+        .catch(err => res.status(400).send(err));
+    },
+
     allByPais(req, res) {
         logger.log("allByPais", req.params.paisId)
         return Ciudad.findAll({

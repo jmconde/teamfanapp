@@ -35,8 +35,10 @@ export default class EstadioList extends React.Component {
     componentDidMount() {
         if (this.state.queryCiudad) {
             $.getJSON(`${config.api}/paises/${this.state.queryPais}/ciudades/${this.state.queryCiudad}/estadios`, this.setEstadios);
-        } else {
+        } else if (this.state.queryPais !== "") {
             $.getJSON(`${config.api}/paises/${this.state.queryPais}/estadios`, this.setEstadios);
+        } else {
+            $.getJSON(`${config.api}/estadios`, this.setEstadios);
         }
     }
 

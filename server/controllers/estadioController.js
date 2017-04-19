@@ -42,9 +42,19 @@ module.exports = {
         .catch(err => res.status(400).send(err));
     },
 
+    all(req, res) {
+        return Estadio.findAll({
+            order: "nombre ASC",
+            include: includeCiudadPais
+        })
+        .then(estadios => res.status(201).send(estadios))
+        .catch(err => res.status(400).send(err));
+    },
+
     allByCiudad(req, res) {
         logger.log("info", "allByCiudad: " + req.params.ciudadId);
         return Estadio.findAll({
+            order: "nombre ASC",
             include: includeCiudadPais,
             where: {
                 ciudadId:  req.params.ciudadId
