@@ -8,6 +8,7 @@ import CiudadList from "./CiudadList.jsx";
 import EstadioList from "./EstadioList.jsx";
 import EstadioEdit from "./EstadioEdit.jsx";
 import EquipoList from "./EquipoList.jsx";
+import EquipoEdit from "./EquipoEdit.jsx";
 import TorneoEdit from "./TorneoEdit.jsx";
 import Header from "./Header.jsx";
 import Home from "./Home.jsx";
@@ -23,11 +24,12 @@ export default class App extends React.Component {
                     <div>
                         <Route exact path="/" component={Home} />
                         <Route exact path="/paises" component={PaisList} />
-                        <Route exact path="/paise/edits" component={PaisForm} />
+                        <Route exact path="/paise/edit" component={PaisForm} />
                         <Route exact path="/ciudades" component={CiudadList} />
                         <Route exact path="/estadios" component={EstadioList} />
                         <Route exact path="/estadios/edit" component={EstadioEdit} />
                         <Route exact path="/equipos" component={EquipoList} />
+                        <Route exact path="/equipos/edit" component={EquipoEdit} />
                         <Route exact path="/torneo/edit" component={TorneoEdit} />
                     </div>
                 </HashRouter>
