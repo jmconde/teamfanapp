@@ -1,5 +1,5 @@
 import React from "react";
-import {HashRouter, Route } from 'react-router-dom';
+import { HashRouter, Route } from "react-router-dom";
 
 import PaisForm from "./PaisForm.jsx";
 import PaisList from "./PaisList.jsx";
@@ -15,7 +15,7 @@ import Home from "./Home.jsx";
 import Nav from "./Nav.jsx";
 
 export default class App extends React.Component {
-    render () { // <PaisForm pais="CO" update={true} />
+    render () {
         return (
             <div>
                 <Header />
@@ -24,7 +24,7 @@ export default class App extends React.Component {
                     <div>
                         <Route exact path="/" component={Home} />
                         <Route exact path="/paises" component={PaisList} />
-                        <Route exact path="/paise/edit" component={PaisForm} />
+                        <Route exact path="/paises/edit" component={PaisForm} />
                         <Route exact path="/ciudades" component={CiudadList} />
                         <Route exact path="/estadios" component={EstadioList} />
                         <Route exact path="/estadios/edit" component={EstadioEdit} />
