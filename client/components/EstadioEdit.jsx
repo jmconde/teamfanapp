@@ -1,4 +1,5 @@
 import React from "react";
+import Q from "q";
 
 export default class PaisForm extends React.Component {
     constructor(props) {
@@ -15,37 +16,44 @@ export default class PaisForm extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.state);
+        var promise;
         if (this.state.update) {
-
-            $.getJSON(`http://localhost:5051/api/estadio/${this.state.id}`)
-
-            $.getJSON(`http://localhost:5051/api/estadio/${this.state.id}`)
+            promise = $.getJSON(`http://localhost:5051/api/estadio/${this.state.id}`)
                 .then(estadio => {
-                    this.setState({
+                    return {
                         source: estadio,
                         nombre: estadio.nombre,
                         id: estadio.id,
                         ciudad: estadio.ciudad.id,
                         pais: estadio.ciudad.pais.id
-                    });
-                    return $.getJSON(`http://localhost:5051/api/paises`);
+                    };
                 })
-                .then(paises => {
-                    this.setState({
-                        paises
-                    });
-                     return $.getJSON(`http://localhost:5051/api/paises/${this.state.pais}/ciudades`);
-                })
-
-                .then(ciudades => {
-                    this.setState({
-                        ciudades,
-                        disabled: false
-                    });
-                });
+        } else {
+            promise = Q({
+                source: {},
+                nombre: "",
+                id: "",
+                ciudad: "",
+                pais: ""
+            });
         }
-    }
+
+        promise.then(estadio => {
+            return $.getJSON(`http://localhost:5051/api/paises`);
+        }).then(paises => {
+                this.setState({
+                    paises
+                });
+                return $.getJSON(`http://localhost:5051/api/paises/${this.state.pais}/ciudades`);
+            })
+
+            .then(ciudades => {
+                this.setState({
+                    ciudades,
+                    disabled: false
+                });
+            });
+    } 
 
     handleSelectChange(event){
         const target = event.target;
@@ -53,8 +61,10 @@ export default class PaisForm extends React.Component {
         const value = target.value;
 
         if (name === "pais") {
-            // TODO:
-            console.log("Buscar ciudades pais");
+            $.getJSON(`http://localhost:5051/api/paises/${value}/ciudades`)
+                .then(ciudades => {
+                    this.setState({ ciudades })
+                });
         } else if (name === "ciudad") {
             this.setState({ ciudad: value });
         }
@@ -92,6 +102,7 @@ export default class PaisForm extends React.Component {
             contentType: "application/json",
             success: response => {
                 console.log(response);
+                alert("Cambios realizados correctamente.");
             }
         });
         return false;
@@ -123,7 +134,7 @@ export default class PaisForm extends React.Component {
                             <div className="col-sm-10">
                                 <input type="text" className="form-control" id="id" name="id"
                                     placeholder="ID" maxLength="2" value={this.state.id}
-                                    onChange={this.handleInputChange} disabled={this.state.disabled || this.state.update} />
+                                    onChange={this.handleInputChange} disabled={true} />
                             </div>
                         </div>
                         <div className="form-group">

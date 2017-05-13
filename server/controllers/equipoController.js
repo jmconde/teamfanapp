@@ -6,7 +6,7 @@ var Equipo = require("../db/models").equipo;
 var Estadio = require("../db/models").estadio;
 var logger = require("winston");
 
-const includeCiudadPaisEstadio = [{ model: Ciudad, include: [Pais] }, Estadio];
+const includeCiudadPaisEstadio = [{ model: Ciudad, include: [Pais] }, {model: Estadio, include: [Ciudad]}];
 
 module.exports = {
     create(req, res) {

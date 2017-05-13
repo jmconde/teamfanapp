@@ -62,10 +62,12 @@ export default class EstadioList extends React.Component {
 
         return (
             <div className="row">
-                <div className="col-md-8 col-md-offset-2">
-                    <h3>Lista de Estadios</h3>
+                <HashRouter>
+                    <div className="col-md-8 col-md-offset-2">
+                        <h3>Lista de Estadios (<Link to={{
+                            pathname: "/estadios/edit"
+                        }}>Nuevo</Link>)</h3>
                     <Filter source = {this.state.estadios} min="0" field="nombre" handler = { this.filterHandler } />
-                    <HashRouter>
                         <table className="table">
                             <thead>
                                 <tr>
@@ -80,8 +82,8 @@ export default class EstadioList extends React.Component {
                                 { estadios }
                             </tbody>
                         </table>
-                    </HashRouter>
-                </div>
+                    </div>
+                </HashRouter>
             </div>
         );
     }

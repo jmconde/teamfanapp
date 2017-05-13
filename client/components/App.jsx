@@ -3,6 +3,7 @@ import { HashRouter, Route } from "react-router-dom";
 
 import PaisForm from "./PaisForm.jsx";
 import PaisList from "./PaisList.jsx";
+import PropertyList from "./PropertyList.jsx";
 import CiudadForm from "./CiudadForm.jsx";
 import CiudadList from "./CiudadList.jsx";
 import EstadioList from "./EstadioList.jsx";
@@ -30,7 +31,7 @@ export default class App extends React.Component {
                         <Route exact path="/estadios/edit" component={EstadioEdit} />
                         <Route exact path="/equipos" component={EquipoList} />
                         <Route exact path="/equipos/edit" component={EquipoEdit} />
-                        <Route exact path="/torneo/edit" component={TorneoEdit} />
+                        <Route exact path="/config" component={PropertyList} />
                     </div>
                 </HashRouter>
             </div>

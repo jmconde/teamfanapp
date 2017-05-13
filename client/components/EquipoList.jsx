@@ -50,6 +50,7 @@ export default class EstadioList extends React.Component {
                     <td>{equipo.ciudad.pais.nombre}</td>
                     <td>{equipo.imagen}</td>
                     <td>{equipo.nombre_corto}</td>
+                    <td>{equipo.estadio.nombre} ({equipo.estadio.ciudad.nombre})</td>
                     <td>
                         <Link to={{
                             pathname: "/equipos/edit",
@@ -63,7 +64,7 @@ export default class EstadioList extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-8 col-md-offset-2">
-                    <h3>Lista de Estadios</h3>
+                    <h3>Lista de Equipos</h3>
                     <Filter source = {this.state.equipos} min="0" field="nombre" handler = { this.filterHandler } />
                     <HashRouter>
                         <table className="table">
@@ -75,6 +76,7 @@ export default class EstadioList extends React.Component {
                                     <th>País</th>
                                     <th>Imagen</th>
                                     <th>Nombre Corto</th>
+                                    <th>Estadio</th>
                                     <th>Comandos</th>
                                 </tr>
                             </thead>

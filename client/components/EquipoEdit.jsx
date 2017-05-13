@@ -73,7 +73,14 @@ export default class PaisForm extends FormBase {
                     });
                 });
         } else if (name === "ciudad") {
-            this.setState({ ciudad: value });
+            let newState = { ciudad: value } 
+            
+            var estadio = this.state.estadios.filter(estadio => estadio.ciudad.id === value);
+            if (estadio.length) {
+                newState.estadio = estadio[0].id;
+            }
+            
+            this.setState(newState);
         } else if (name === "estadio") {
             this.setState({ estadio: value });
         }
@@ -103,25 +110,28 @@ export default class PaisForm extends FormBase {
             contentType: "application/json",
             success: response => {
                 console.log(response);
+                alert("Cambios realizados correctamente.");
             }
         });
         return false;
     }
 
     render() {
-        var paises = (<select classID="pais" name="pais" className="form-control" disabled={this.state.disabled} value={this.state.pais} onChange={this.handleSelectChange}>
+        var paises = (<select id="pais" name="pais" className="form-control" disabled={this.state.disabled} value={this.state.pais} onChange={this.handleSelectChange}>
+            <option value="">Seleccione un país</option>
             { this.state.paises.map((pais, i) => {
                 return <option key={i} value={pais.id}>{pais.nombre}</option>;
             })}
         </select>);
 
-        var ciudades = (<select classID="ciudad" name="ciudad" className="form-control" disabled={this.state.disabled} value={this.state.ciudad} onChange={this.handleSelectChange}>
+        var ciudades = (<select id="ciudad" name="ciudad" className="form-control" disabled={this.state.disabled} value={this.state.ciudad} onChange={this.handleSelectChange}>
+            <option value="">Seleccione una ciudad</option>
             { this.state.ciudades.map((ciudad, i) => {
-                return <option key={i} value={ciudad.id} >{ciudad.nombre}</option>;
+                return <option key={i} value={ciudad.id} >{ciudad.nombre} ({ciudad.id})</option>;
             })}
         </select>);
 
-        var estadios = (<select classID="estadio" name="estadio" className="form-control" disabled={this.state.disabled} value={this.state.estadio} onChange={this.handleSelectChange}>
+        var estadios = (<select id="estadio" name="estadio" className="form-control" disabled={this.state.disabled} value={this.state.estadio} onChange={this.handleSelectChange}>
             { this.state.estadios.map((estadio, i) => {
                 return <option key={i} value={estadio.id} >{estadio.nombre} ({estadio.ciudad.nombre})</option>;
             })}

@@ -27,6 +27,9 @@ export default class Nav extends React.Component {
                                 <li>
                                     <Link to="/equipos">Equipos</Link>
                                 </li>
+                                <li>
+                                    <Link to="/config">Configuración</Link>
+                                </li>
                             </ul>
                         </div>
                     </div>
