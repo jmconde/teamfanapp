@@ -1,14 +1,36 @@
 import React from "react";
 import Filter from './Filter.jsx';
+import Config from "../../common/config.js";
+import EditableInputText from "./EditableInputText.jsx";
+import Message from "./Message.jsx";
 
 export default class PropertyList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             properties: [],
-            propertiesToShow: []
+            propertiesToShow: [],
+            message: {
+                title: null,
+                message: ""
+            }
         };
         this.filterHandler = this.filterHandler.bind(this);
+        this.onUpdateProperty = this.onUpdateProperty.bind(this);
+        this.showMessage = this.showMessage.bind(this);
+    }
+
+    onUpdateProperty(property) {
+        console.log(property);
+        delete property.updatedAt
+         $.ajax(`${Config.api}/properties/${property.id}`, {
+            data: JSON.stringify(property),
+            method: "PUT",
+            contentType : "application/json",
+            success: response => {
+                this.showMessage("Propiedad Guardada", "La propiedad fue guardada correctamente.");
+            }
+        });
     }
 
     filterHandler(properties) {
@@ -18,11 +40,22 @@ export default class PropertyList extends React.Component {
     }
 
     componentDidMount() {
-        $.getJSON("http://localhost:5051/api/properties", properties => {
+        $.getJSON(`${Config.api}/properties`, properties => {
             this.setState({
                 properties,
                 propertiesToShow: properties
              });
+        });
+    }
+
+    showMessage(title, message) {
+        console.log("aqui va")
+        this.setState({
+            message: {
+                title: title,
+                message: message,
+                show: true
+            }
         });
     }
 
@@ -31,7 +64,7 @@ export default class PropertyList extends React.Component {
             return(
                 <tr key={i}>
                     <td>{prop.key}</td>
-                    <td>{prop.value}</td>
+                    <td><EditableInputText field="value" model={ prop } onUpdate={ this.onUpdateProperty } /></td>
                     <td></td>
                 </tr>
             );
@@ -55,6 +88,7 @@ export default class PropertyList extends React.Component {
                             </tbody>
                         </table>
                 </div>
+                <Message message={ this.state.message } />
             </div>
         );
     }

@@ -1,0 +1,10 @@
+.c-{
+    &editable-text{
+        &>div.hidden {
+            display: none;
+        }
+        &> span.hidden {
+            display: none;
+        }
+    }
+}
